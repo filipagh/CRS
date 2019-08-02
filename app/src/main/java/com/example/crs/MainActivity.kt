@@ -1,33 +1,11 @@
 package com.example.crs
 
-import android.content.Context
 import android.content.Intent
+import android.media.projection.MediaProjectionManager
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.view.WindowManager
-import android.graphics.Bitmap
-import android.R.attr.y
-import android.R.attr.x
-import android.graphics.Point
-import android.view.Display
-import android.graphics.drawable.Drawable
-import android.support.v4.content.res.TypedArrayUtils.getResourceId
-import android.content.res.TypedArray
-import android.content.res.Resources.Theme
-import android.app.Activity
-import android.graphics.Canvas
-import android.view.View
-import android.R.layout
-import android.hardware.display.DisplayManager
-import android.media.projection.MediaProjectionManager
-import android.view.View.MeasureSpec
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import android.view.SurfaceView
-import kotlin.concurrent.thread
+import android.support.v7.app.AppCompatActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +19,9 @@ lateinit var mediaProjectManag: MediaProjectionManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+//        val tmp = RoyalApiUtil()
+//        tmp.getPlayer("88UPPPVR8")
 
         floatingService = Intent(this, FloatingService::class.java)
 
