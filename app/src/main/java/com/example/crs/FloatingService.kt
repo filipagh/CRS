@@ -8,13 +8,15 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import com.bsk.floatingbubblelib.FloatingBubbleConfig
 import com.bsk.floatingbubblelib.FloatingBubbleService
+import com.example.crs.RoyalApi.PlayerModel
 
 class FloatingService : FloatingBubbleService() {
 
-    lateinit var intentMain: Intent
-//    var mediaProjection: MediaProjection? = null
+    var intentMain: Intent? = null
+    //    var mediaProjection: MediaProjection? = null
     var mediaProjectionUtil: MediaProjectionUtil? = null
     lateinit var mImageReader: ImageReader
     lateinit var root: View
@@ -66,25 +68,27 @@ class FloatingService : FloatingBubbleService() {
     fun setup(vstup: View) {
         if (mediaProjectionUtil == null) {
             mediaProjectionUtil = MediaProjectionUtil()
-            mediaProjectionUtil!!.setupMediaProjection(intentMain,this)
+            mediaProjectionUtil!!.setupMediaProjection(intentMain!!, this)
         }
         val btn = root.findViewById(R.id.scrShot) as Button
         btn.isEnabled = true
     }
 
     fun scrShot(view: View) {
-        val btn = root.findViewById(R.id.scrShot) as Button
-        btn.isEnabled = false
-        setState(false)
+//        val btn = root.findViewById(R.id.scrShot) as Button
+//        btn.isEnabled = false
 
         val scrShot = mediaProjectionUtil!!.makeScrShot()
-        mediaProjectionUtil!!.parseTextFromBitmap(scrShot)
-        setState(true)
-        val surf = root.findViewById(R.id.imageView) as ImageView
-        surf.setImageBitmap(scrShot)
+        val player = PlayerModel(scrShot)
 
-        val btnClear = root.findViewById(R.id.button2) as Button
-        btnClear.isEnabled = true
+        Toast.makeText(this, player.playerData?.get("trophies")?.toString(), Toast.LENGTH_LONG).show()
+
+
+//        val surf = root.findViewById(R.id.imageView) as ImageView
+//        surf.setImageBitmap(scrShot)
+
+//        val btnClear = root.findViewById(R.id.button2) as Button
+//        btnClear.isEnabled = true
     }
 
     fun clear(view: View) {

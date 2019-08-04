@@ -35,7 +35,7 @@ class MediaProjectionUtil {
         return instance
     }
 
-    fun setupMediaProjection(intentMain: Intent, context: Context){
+    fun setupMediaProjection(intentMain: Intent, context: Context) {
         appContect = context.applicationContext
         val resultCode = intentMain.getIntExtra("resultCode", 0)
         val data = intentMain.getParcelableExtra<Intent>("mediaProjectionData")
@@ -48,7 +48,7 @@ class MediaProjectionUtil {
         windowManager.defaultDisplay.getSize(windowSize)
 
         mImageReader = ImageReader.newInstance(windowSize!!.y, windowSize!!.y, PixelFormat.RGBA_8888, 20)
-context.applicationContext
+        context.applicationContext
         mediaProjection!!.createVirtualDisplay(
             "ScreenCapture",
             windowSize!!.x, windowSize!!.y, 1000,
@@ -75,12 +75,12 @@ context.applicationContext
 
 //        return Bitmap.createBitmap(bitmap, 0, 0, windowSize!!.x, windowSize!!.y)
         val a = Bitmap.createBitmap(bitmap, 0, 0, windowSize!!.x, windowSize!!.y)
-        val b = Bitmap.createBitmap(a,0,300,300,350)
+        val b = Bitmap.createBitmap(a, 0, 350, 500, 130)
 
-        return Bitmap.createScaledBitmap(b,900,1500,false)
+        return Bitmap.createScaledBitmap(b, 500 * 3, 130 * 3, false)
     }
 
-    fun parseTextFromBitmap(bitmap: Bitmap) {
+    fun parseTextFromBitmap(bitmap: Bitmap): ArrayList<String> {
 
         val fb = Frame.Builder()
         fb.setBitmap(bitmap)
@@ -88,12 +88,15 @@ context.applicationContext
         val parsedTextBlocks = textRecognizer!!.detect(frame)
         val result = arrayListOf<String>()
         for (i in 0 until parsedTextBlocks.size()) {
-            try {
-                result.add(parsedTextBlocks[i].value)
-                Log.d("Parser",parsedTextBlocks[i].value)
-            } catch (e: Exception)
-            {}
+            for (ii in 0 until parsedTextBlocks[i].components.size) {
+                try {
+                    result.add(parsedTextBlocks[i].components[ii].value)
+                    Log.d("Parser", parsedTextBlocks[i].components[ii].value)
+                } catch (e: Exception) {
+                }
+            }
         }
+        return result
 
     }
 

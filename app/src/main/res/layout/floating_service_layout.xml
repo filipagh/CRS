@@ -6,13 +6,13 @@
         android:layout_width="match_parent" android:layout_height="wrap_content">
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:orientation="horizontal">
+            android:layout_height="29dp" android:orientation="horizontal">
 
         <Button
                 android:text="Start"
                 android:layout_width="wrap_content"
                 android:onClick="setup"
-                android:layout_height="wrap_content" android:id="@+id/button" android:layout_weight="1"/>
+                android:layout_height="match_parent" android:id="@+id/button" android:layout_weight="1"/>
         <Button
                 android:text="Make Scrshot"
                 android:layout_width="wrap_content"
@@ -22,7 +22,8 @@
         <Button
                 android:text="Clean"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/button2" android:onClick="clear" android:layout_weight="1"
+                android:layout_height="wrap_content" android:id="@+id/button2" android:onClick="clear"
+                android:layout_weight="1"
                 android:enabled="false"/>
 
     </LinearLayout>

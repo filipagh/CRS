@@ -13,31 +13,29 @@ class MainActivity : AppCompatActivity() {
     companion object {
         val ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 8587
     }
-   lateinit var floatingService: Intent
-lateinit var mediaProjectManag: MediaProjectionManager
+
+    lateinit var floatingService: Intent
+    lateinit var mediaProjectManag: MediaProjectionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val tmp = RoyalApiUtil()
-//        tmp.getPlayer("88UPPPVR8")
-
         floatingService = Intent(this, FloatingService::class.java)
 
         mediaProjectManag = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        startActivityForResult(mediaProjectManag.createScreenCaptureIntent(),100)
+        startActivityForResult(mediaProjectManag.createScreenCaptureIntent(), 100)
 
 
     }
 
     private fun askForOverlayPermission() {
-            startActivityForResult(
-                Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + packageName)
-                ), ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE
-            )
+        startActivityForResult(
+            Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + packageName)
+            ), ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -50,8 +48,8 @@ lateinit var mediaProjectManag: MediaProjectionManager
             }
         }
         if (requestCode == 100) {
-            floatingService.putExtra("resultCode",resultCode)
-            floatingService.putExtra("mediaProjectionData",data)
+            floatingService.putExtra("resultCode", resultCode)
+            floatingService.putExtra("mediaProjectionData", data)
 
             // permison na zobrazovanie nad aplikaciami
             if (!Settings.canDrawOverlays(this)) {
