@@ -28,11 +28,11 @@
 
     </LinearLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:fillViewport="true" android:layout_gravity="center"
             android:id="@+id/playerStatsSlot">
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content" tools:srcCompat="@tools:sample/avatars" android:id="@+id/imageView"/>
