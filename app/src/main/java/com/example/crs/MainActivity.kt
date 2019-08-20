@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        floatingService = Intent(this, FloatingService::class.java)
+        floatingService = Intent(this, FloatingWidgetShowService::class.java)
 
         mediaProjectManag = getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         startActivityForResult(mediaProjectManag.createScreenCaptureIntent(), 100)

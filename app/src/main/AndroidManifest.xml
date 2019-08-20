@@ -20,6 +20,11 @@
                 android:enabled="true"
                 android:exported="true">
         </service>
+        <service
+                android:name=".FloatingWidgetShowService"
+                android:enabled="true"
+                android:exported="true">
+        </service>
 
         <activity android:name=".MainActivity">
             <intent-filter>
