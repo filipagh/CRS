@@ -18,6 +18,10 @@ class PlayerModel(scrShot: Bitmap) {
 
     private fun parsePlayer(scrShot: Bitmap): Boolean {
         val parsedBlocks = mainMediaProjectionUtil.parseTextFromBitmap(scrShot)
+        if (parsedBlocks.size<2) {
+            return false
+        }
+
         if (getPlayer(parsedBlocks[1])) {
             return true
         }

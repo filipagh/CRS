@@ -6,12 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.IBinder
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
+
+
 
 class SetPositionService : Service() {
 
@@ -34,9 +33,9 @@ class SetPositionService : Service() {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
-        params.x = getSharedPreferences(PREFERENCES, Activity.MODE_PRIVATE).getInt(X, 0)
-        params.y = getSharedPreferences(PREFERENCES, Activity.MODE_PRIVATE).getInt(Y, 0)
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        params.gravity = Gravity.TOP or Gravity.LEFT
+
         windowManager.addView(floatingView, params)
         collapsedView = floatingView.findViewById(R.id.Layout_Collapsed)
 

@@ -9,9 +9,9 @@ import android.hardware.display.DisplayManager
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.text.TextBlock
@@ -36,30 +36,33 @@ class MediaProjectionUtil {
     }
 
     fun setupMediaProjection(intentMain: Intent, context: Context) {
-        appContect = context.applicationContext
-        val resultCode = intentMain.getIntExtra("resultCode", 0)
-        val data = intentMain.getParcelableExtra<Intent>("mediaProjectionData")
-        val mediaProjectManag =
-            context.getSystemService(AppCompatActivity.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        mediaProjection = mediaProjectManag.getMediaProjection(resultCode, data)
+        if (mediaProjection == null) {
+            appContect = context.applicationContext
+            val resultCode = intentMain.getIntExtra("resultCode", 0)
+            val data = intentMain.getParcelableExtra<Intent>("mediaProjectionData")
+            val mediaProjectManag =
+                context.getSystemService(AppCompatActivity.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowSize = Point()
-        windowManager.defaultDisplay.getSize(windowSize)
+            mediaProjection = mediaProjectManag.getMediaProjection(resultCode, data)
 
-        mImageReader = ImageReader.newInstance(windowSize!!.y, windowSize!!.y, PixelFormat.RGBA_8888, 20)
-        context.applicationContext
-        mediaProjection!!.createVirtualDisplay(
-            "ScreenCapture",
-            windowSize!!.x, windowSize!!.y, 1000,
-            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-            mImageReader!!.surface, null, null
-        )
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowSize = Point()
+            windowManager.defaultDisplay.getSize(windowSize)
 
-        setupTextParser()
+            mImageReader = ImageReader.newInstance(windowSize!!.y, windowSize!!.y, PixelFormat.RGBA_8888, 20)
+            context.applicationContext
+            mediaProjection!!.createVirtualDisplay(
+                "ScreenCapture",
+                windowSize!!.x, windowSize!!.y, 1000,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                mImageReader!!.surface, null, null
+            )
+
+            setupTextParser()
+        }
     }
 
-    fun makeScrShot(): Bitmap {
+    fun makeScrShot(boxPositon: Point): Bitmap {
 
         var i = 0
         while (i != 100000) {
@@ -75,7 +78,7 @@ class MediaProjectionUtil {
 
 //        return Bitmap.createBitmap(bitmap, 0, 0, windowSize!!.x, windowSize!!.y)
         val a = Bitmap.createBitmap(bitmap, 0, 0, windowSize!!.x, windowSize!!.y)
-        val b = Bitmap.createBitmap(a, 0, 350, 500, 130)
+        val b = Bitmap.createBitmap(a, 0, boxPositon.y +10, 500, 130)
 
         return Bitmap.createScaledBitmap(b, 500 * 3, 130 * 3, false)
     }

@@ -1,12 +1,14 @@
 package com.example.crs
 
+import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
-import android.media.ImageReader
+import android.graphics.Point
 import android.os.IBinder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -23,9 +25,16 @@ class FloatingWidgetShowService : Service() {
     lateinit var params: WindowManager.LayoutParams
     lateinit var image: ImageView
 
-    override fun onBind(intent: Intent): IBinder? {
+    var intentMain: Intent? = null
+    var mediaProjectionUtil: MediaProjectionUtil? = null
 
+    override fun onBind(intent: Intent): IBinder? {
         return null
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intentMain = intent!!
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onCreate() {
@@ -43,9 +52,7 @@ class FloatingWidgetShowService : Service() {
         collapsedView = floatingView.findViewById(R.id.Layout_Collapsed)
         image = floatingView.findViewById(R.id.Logo_Icon)
 
-//        collapsedView.setOnClickListener {
-//            expandedView.visibility =  if (expandedView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-//        }
+        floatingView.setOnClickListener { scrShot() }
 
         floatingView.setOnTouchListener(object : View.OnTouchListener {
             var X_Axis: Int = 0
@@ -62,6 +69,7 @@ class FloatingWidgetShowService : Service() {
                         Y_Axis = params.y
                         TouchX = event.rawX
                         TouchY = event.rawY
+                        Log.d("aaaa","stlacil som")
                         return false
                     }
 
@@ -69,6 +77,7 @@ class FloatingWidgetShowService : Service() {
                         if (shouldClose(params.x, params.y)) {
                             stopService(Intent(applicationContext, FloatingWidgetShowService::class.java))
                         }
+                        Log.d("aaaa","stlacil som up")
                         return false
                     }
 
@@ -89,23 +98,18 @@ class FloatingWidgetShowService : Service() {
         })
     }
 
-    var intentMain: Intent? = null
-    //    var mediaProjection: MediaProjection? = null
-    var mediaProjectionUtil: MediaProjectionUtil? = null
-    lateinit var mImageReader: ImageReader
+    fun scrShot() {
 
-    fun setup(vstup: View) {
+        Toast.makeText(this,"scrshot", Toast.LENGTH_LONG).show()
         if (mediaProjectionUtil == null) {
             mediaProjectionUtil = MediaProjectionUtil()
             mediaProjectionUtil!!.setupMediaProjection(intentMain!!, this)
         }
-    }
+        var boxPosition = Point()
+        boxPosition.x = getSharedPreferences(SetPositionService.PREFERENCES, Activity.MODE_PRIVATE).getInt(SetPositionService.X, 0)
+        boxPosition.y = getSharedPreferences(SetPositionService.PREFERENCES, Activity.MODE_PRIVATE).getInt(SetPositionService.Y, 0)
 
-    fun scrShot(view: View) {
-//        val btn = root.findViewById(R.id.scrShot) as Button
-//        btn.isEnabled = false
-
-        val scrShot = mediaProjectionUtil!!.makeScrShot()
+        val scrShot = mediaProjectionUtil!!.makeScrShot(boxPosition)
         val player = PlayerModel(scrShot)
 
         Toast.makeText(this, player.playerData?.get("trophies")?.toString(), Toast.LENGTH_LONG).show()
@@ -128,3 +132,5 @@ class FloatingWidgetShowService : Service() {
         windowManager.removeView(floatingView)
     }
 }
+
+
